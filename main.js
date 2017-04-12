@@ -21,13 +21,30 @@ var users = [
     {
         id: 3,
         name: 'Алексей'
-    }
+    },
+    {
+        id: 4,
+        name: 'Аделина'
+    },
+    {
+        id: 5,
+        name: 'Ирина'
+    },
+    {
+        id: 6,
+        name: 'Александр'
+    },
+    {
+        id: 7,
+        name: 'Дмитро'
+    },
 ];
 
 var User = function (id, name) {
   this.id = id;
   this.name = name;
   this.tasks = new Object();
+  this.taskId = 0;
 
 
 
@@ -40,11 +57,14 @@ var User = function (id, name) {
 
 
 User.prototype.createNewTask = function () {
-
-    var ob = new Task(Object.keys(this.tasks).length, this.input_createNewTask.value);
+if(this.input_createNewTask.value == '') {
+    return
+}
+    var ob = new Task( this.taskId++, this.input_createNewTask.value);
 
         this.tasks[ob.id ] = ob;
         this.input_createNewTask.value = '';
+
         this.renderRightBar();
 
 
@@ -76,8 +96,10 @@ User.prototype.renderRightBar = function () {
         rightBar.innerHTML = '';
         rightBar.appendChild(this.btn_createNewTask);
         rightBar.appendChild(this.input_createNewTask);
+        rightBar.appendChild(this.btn_console);
 
-1
+
+
 
         for(var key in this.tasks) {
             this.tasks[key].name
@@ -94,9 +116,16 @@ User.prototype.renderRightBar = function () {
 };
 User.prototype.initRightBar = function () {
     this.btn_createNewTask = document.createElement('button');
-    this.btn_createNewTask.innerText = 'Создать задачу';
+    this.btn_console = document.createElement('button');
     this.input_createNewTask = document.createElement('input');
+
+    this.btn_createNewTask.innerText = 'Создать задачу';
+    this.btn_console.innerText = 'Вывести в консоль';
+
     this.btn_createNewTask.addEventListener( "click" , this.createNewTask.bind(this) );
+    this.btn_console.addEventListener('click', function () {
+        console.log(this.tasks);
+    }.bind(this));
 };
 
 
